@@ -4,15 +4,13 @@ import { FiX } from "react-icons/fi";
 
 const API_URL = import.meta.env.VITE_API_URL || "";
 
-function CourseUpload() {
-  const [fields, setFields] = useState({
-    title: "",
-    type_name: "",
-  });
+function CourseForm() {
+  const [fields, setFields] = useState({ title: "", type_name: "" });
   const [coverFile, setCoverFile] = useState(null);
   const [coverPreview, setCoverPreview] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const fileInputRef = useRef();
 
   const handleChange = (e) => {
@@ -35,6 +33,9 @@ function CourseUpload() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (submitting) return;
+
+    // Validation
     if (!fields.title.trim() || !fields.type_name.trim()) {
       setMessage("กรุณากรอกชื่อคอร์สและประเภทคอร์ส");
       setError(true);
@@ -45,6 +46,8 @@ function CourseUpload() {
       setError(true);
       return;
     }
+
+    setSubmitting(true);
     try {
       const formData = new FormData();
       formData.append("title", fields.title.trim());
@@ -53,6 +56,7 @@ function CourseUpload() {
 
       await axios.post(`${API_URL}/api/courses`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
+        withCredentials: true,
       });
 
       setMessage("เพิ่มคอร์สสำเร็จ");
@@ -62,8 +66,11 @@ function CourseUpload() {
       setCoverPreview("");
       if (fileInputRef.current) fileInputRef.current.value = "";
     } catch (err) {
-      setMessage("เกิดข้อผิดพลาด: " + (err.response?.data?.error || err.message));
+      const msg = err.response?.data?.error || err.message || "เกิดข้อผิดพลาด";
+      setMessage("เกิดข้อผิดพลาด: " + msg);
       setError(true);
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -71,6 +78,7 @@ function CourseUpload() {
     <div className="max-w-lg mx-auto py-8">
       <h2 className="text-xl font-bold mb-4">เพิ่มคอร์สใหม่</h2>
       <form onSubmit={handleSubmit} className="space-y-5">
+        {/* ชื่อคอร์ส */}
         <div>
           <label className="block mb-1 font-semibold">ชื่อคอร์ส*</label>
           <input
@@ -82,6 +90,8 @@ function CourseUpload() {
             required
           />
         </div>
+
+        {/* ประเภทคอร์ส */}
         <div>
           <label className="block mb-1 font-semibold">ประเภทคอร์ส* (กำหนดเอง)</label>
           <input
@@ -93,6 +103,8 @@ function CourseUpload() {
             required
           />
         </div>
+
+        {/* รูปปก */}
         <div>
           <label className="block mb-1 font-semibold">รูปภาพปกคอร์ส*</label>
           <div className="relative w-52 h-36">
@@ -125,16 +137,21 @@ function CourseUpload() {
             )}
           </div>
         </div>
+
+        {/* ปุ่มบันทึก */}
         <button
           type="submit"
-          className="bg-blue-600 text-white px-6 py-2 rounded font-semibold hover:bg-blue-700"
+          disabled={submitting}
+          className={`bg-blue-600 text-white px-6 py-2 rounded font-semibold hover:bg-blue-700 ${
+            submitting ? "opacity-50 cursor-not-allowed" : ""
+          }`}
         >
-          บันทึก
+          {submitting ? "กำลังบันทึก..." : "บันทึก"}
         </button>
+
+        {/* ข้อความแสดงผล */}
         {message && (
-          <div
-            className={`mt-2 ${error ? "text-red-600" : "text-green-600"}`}
-          >
+          <div className={`mt-2 ${error ? "text-red-600" : "text-green-600"}`}>
             {message}
           </div>
         )}
@@ -143,4 +160,4 @@ function CourseUpload() {
   );
 }
 
-export default CourseUpload;
+export default CourseForm;
