@@ -21,14 +21,15 @@ export default function EditCoursesTable() {
   useEffect(() => {
     loadData();
   }, []);
+
   async function loadData() {
     setLoading(true);
     try {
-      const [courseRes, typeRes] = await Promise.all([
-        axios.get(`${API_URL}/api/courses`),
+      const [cardRes, typeRes] = await Promise.all([
+        axios.get(`${API_URL}/api/courses_card`),
         axios.get(`${API_URL}/api/course_types`)
       ]);
-      setRows(Array.isArray(courseRes.data) ? courseRes.data : []);
+      setRows(Array.isArray(cardRes.data) ? cardRes.data : []);
       setTypes(Array.isArray(typeRes.data) ? typeRes.data : []);
     } catch {
       setRows([]);
@@ -45,7 +46,7 @@ export default function EditCoursesTable() {
       type_id: row.type_id ?? "",
     });
     setEditFile(null);
-    setEditPreview(row.cover_image ? `${API_URL}${row.cover_image}` : "");
+    setEditPreview(row.card_image ? `${API_URL}${row.card_image}` : "");
     setRemoveImage(false);
     if (fileInputRef.current) fileInputRef.current.value = "";
     setMsg("");
@@ -90,9 +91,9 @@ export default function EditCoursesTable() {
       const formData = new FormData();
       formData.append("title", editFields.title ?? "");
       formData.append("type_id", editFields.type_id ?? "");
-      if (editFile) formData.append("cover_image", editFile);
-      if (removeImage) formData.append("cover_image", "");
-      await axios.put(`${API_URL}/api/courses/${id}`, formData, {
+      if (editFile) formData.append("card_image", editFile);
+      if (removeImage) formData.append("card_image", "");
+      await axios.put(`${API_URL}/api/courses_card/${id}`, formData, {
         headers: { "Content-Type": "multipart/form-data" }
       });
       setMsg("อัปเดตสำเร็จ");
@@ -111,7 +112,7 @@ export default function EditCoursesTable() {
     if (!window.confirm("ยืนยันลบข้อมูลนี้?")) return;
     setMsg(""); setErr(false);
     try {
-      await axios.delete(`${API_URL}/api/courses/${id}`);
+      await axios.delete(`${API_URL}/api/courses_card/${id}`);
       setMsg("ลบสำเร็จ");
       setEditId(null);
       await loadData();
@@ -134,7 +135,7 @@ export default function EditCoursesTable() {
   return (
     <div className="px-6 py-8 max-w-full">
       <h2 className="text-2xl font-bold mb-2">
-        ตารางข้อมูล <span className="text-blue-600">Course</span>
+        ตารางข้อมูล <span className="text-blue-600">Card คอร์ส</span>
       </h2>
       {msg && (
         <div className={`mb-3 p-2 rounded ${err ? "bg-red-100 text-red-600" : "bg-green-100 text-green-700"}`}>
@@ -167,7 +168,7 @@ export default function EditCoursesTable() {
             {filtered.map(row => (
               <tr key={row.id} className={editId === row.id ? "bg-yellow-50" : ""}>
                 <td className="border px-2 py-2">{row.id}</td>
-                {/* -- title -- */}
+
                 <td className="border px-2 py-2 w-44">
                   {editId === row.id ? (
                     <input
@@ -177,7 +178,7 @@ export default function EditCoursesTable() {
                     />
                   ) : row.title}
                 </td>
-                {/* -- type_id -- */}
+
                 <td className="border px-2 py-2 w-32">
                   {editId === row.id ? (
                     <select
@@ -192,7 +193,7 @@ export default function EditCoursesTable() {
                     </select>
                   ) : (row.type_name || row.type_id)}
                 </td>
-                {/* -- cover_image -- */}
+
                 <td className="border px-2 py-2 w-32">
                   {editId === row.id ? (
                     <div className="flex flex-col items-center gap-2">
@@ -220,16 +221,16 @@ export default function EditCoursesTable() {
                       />
                     </div>
                   ) : (
-                    row.cover_image ? (
+                    row.card_image ? (
                       <img
-                        src={API_URL + row.cover_image}
+                        src={API_URL + row.card_image}
                         alt=""
                         className="w-16 h-20 object-contain rounded shadow border mx-auto"
                       />
                     ) : "-"
                   )}
                 </td>
-                {/* -- Action -- */}
+
                 <td className="border px-2 py-2 w-40">
                   {editId === row.id ? (
                     <div className="flex gap-1">
