@@ -8,13 +8,12 @@ import {
   FaRegEdit,
 } from "react-icons/fa";
 
-// รายการเมนูหลัก
 const menu = [
   { to: "/", label: "เพิ่มคอร์สใหม่", icon: <FaPlus /> },
   { to: "/add-card", label: "เพิ่ม Card คอร์ส", icon: <FaRegIdCard /> },
   { to: "/discounts", label: "จัดการส่วนลดคอร์ส", icon: <FaPercentage /> },
-  { to: "/edit", label: "แก้ไขคอร์ส", icon: <FaEdit /> }, // สามารถใส่เป็น /edit ถ้าอยากให้แก้ไขรายการทั้งหมด
-  { to: "/edit-card", label: "แก้ไข Card คอร์ส", icon: <FaRegEdit /> },
+  { to: "/edit", label: "แก้ไขคอร์ส", icon: <FaEdit /> },        // <== ตรงกับ Route /edit
+  { to: "/edit-card", label: "แก้ไข Card คอร์ส", icon: <FaRegEdit /> }, // <== ตรงกับ Route /edit-card
 ];
 
 export default function Sidebar() {
@@ -31,10 +30,9 @@ export default function Sidebar() {
             to={to}
             className={({ isActive }) =>
               `flex items-center gap-3 px-3 py-2 rounded-lg font-medium transition-all hover:bg-blue-50
-              ${
-                isActive
-                  ? "bg-blue-100 text-blue-700 font-bold border-l-4 border-blue-600"
-                  : "text-gray-700"
+              ${isActive
+                ? "bg-blue-100 text-blue-700 font-bold border-l-4 border-blue-600"
+                : "text-gray-700"
               }`
             }
             end={to === "/"}

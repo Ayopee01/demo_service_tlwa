@@ -16,8 +16,9 @@ function App() {
             <Route path="/" element={<CourseUpload />} />
             <Route path="/add-card" element={<CourseCardCreate />} />
             <Route path="/discounts" element={<DiscountForm />} />
-            <Route path="/edit-card" element={<TableEdit />} /> {/* <-- เพิ่ม Route ตรงนี้ */}
-            <Route path="/edit/:id" element={<EditCourseCard />} /> {/* เหลือแค่ 1 อัน */}
+            <Route path="/edit" element={<TableEdit />} />          {/* ✅ Route รวมแก้ไขคอร์ส */}
+            <Route path="/edit-card" element={<EditCourseCard />} />{/* ✅ Route รวมแก้ไข Card */}
+            <Route path="/edit/:id" element={<CourseUpload />} />   {/* ✅ Route แก้ไขคอร์สทีละตัว (แก้ component ตามจริง) */}
           </Routes>
         </div>
       </div>
