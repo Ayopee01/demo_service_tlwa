@@ -3,6 +3,7 @@ import axios from "axios";
 import { FiX, FiUpload, FiEdit2, FiSave, FiTrash2 } from "react-icons/fi";
 
 const API_URL = import.meta.env.VITE_API_URL || "";
+console.log('VITE_API_URL', API_URL);
 
 function TableEdit() {
   const [rows, setRows] = useState([]);

@@ -3,6 +3,7 @@ import axios from "axios";
 import { FiEdit, FiTrash, FiSave, FiX, FiImage } from "react-icons/fi";
 
 const API_URL = import.meta.env.VITE_API_URL || "";
+console.log('VITE_API_URL', API_URL);
 
 function formatDate(val) {
   if (!val) return "";
