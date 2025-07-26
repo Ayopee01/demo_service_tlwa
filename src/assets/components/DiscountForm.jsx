@@ -12,14 +12,14 @@ export default function AddDiscountOptions() {
   const [msg, setMsg] = useState("");
   const [error, setError] = useState(false);
 
-  // ดึง course list จาก table "courses"
+  // โหลดคอร์ส (courses)
   useEffect(() => {
     axios.get(`${API_URL}/api/courses`)
-      .then(res => setCourses(res.data || []))
+      .then(res => setCourses(Array.isArray(res.data) ? res.data : []))
       .catch(() => setCourses([]));
   }, []);
 
-  // ตัวเลือก type_id และ custom
+  // ตัวเลือก type_id
   const MEMBER_OPTIONS = [
     { value: 1, label: "สมาชิกสมาคมเวชศาสตร์วิถีชีวิตและสุขภาวะไทย (TLWA)" },
     { value: 2, label: "องค์กรพันธมิตรสมาคมเวชศาสตร์วิถีชีวิตและสุขภาวะไทย (TLWA)" },
@@ -27,13 +27,12 @@ export default function AddDiscountOptions() {
     { value: 4, label: "ระบุเอง" }
   ];
 
-  // เพิ่มแถวใหม่
+  // เพิ่ม/ลบแถว
   const addRow = () =>
     setRows([
       ...rows,
       { type: "", custom_name: "", discount_amount: "", discount_percent: "" }
     ]);
-  // ลบแถว
   const removeRow = idx => setRows(rows.filter((_, i) => i !== idx));
 
   // handle เปลี่ยนค่า
@@ -49,7 +48,7 @@ export default function AddDiscountOptions() {
     ));
   };
 
-  // validate & submit
+  // Validate และ submit
   const handleSubmit = async e => {
     e.preventDefault();
     setMsg(""); setError(false);
@@ -58,7 +57,9 @@ export default function AddDiscountOptions() {
     for (const [i, row] of rows.entries()) {
       if (!row.type) return setErrorMsg(`เลือกประเภทสมาชิก/องค์กรแถวที่ ${i + 1}`);
       if (Number(row.type) === 4 && !row.custom_name.trim())
-        return setErrorMsg(`กรอกรายละเอียด "ระบุเอง" แถวที่ ${i + 1}`);
+        return setErrorMsg(`กรอกรายละเอียด 'ระบุเอง' แถวที่ ${i + 1}`);
+      if (Number(row.type) !== 3 && row.discount_amount === "" && row.discount_percent === "")
+        return setErrorMsg(`แถวที่ ${i + 1} ต้องกรอกส่วนลดอย่างน้อย 1 ช่อง`);
     }
 
     try {
@@ -67,8 +68,8 @@ export default function AddDiscountOptions() {
         items: rows.map(row => ({
           member_type_id: Number(row.type),
           custom_name: Number(row.type) === 4 ? row.custom_name : null,
-          discount_amount: row.discount_amount || 0,
-          discount_percent: row.discount_percent || 0
+          discount_amount: row.discount_amount ? Number(row.discount_amount) : 0,
+          discount_percent: row.discount_percent ? Number(row.discount_percent) : 0
         }))
       });
       setMsg("บันทึกข้อมูลสำเร็จ");
@@ -90,7 +91,7 @@ export default function AddDiscountOptions() {
               เพิ่มประเภทสมาชิก/องค์กร + ส่วนลด
             </h2>
             <p className="text-blue-100 mt-2 text-sm">
-              บันทึกหลายรายการพร้อมกัน
+              เพิ่มแถว กำหนดส่วนลดได้หลายประเภทใน 1 คอร์ส
             </p>
           </div>
           <form className="p-8 space-y-8" onSubmit={handleSubmit}>

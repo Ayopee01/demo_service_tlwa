@@ -16,7 +16,7 @@ export default function CourseCardCreate() {
     registration_end: "",
     location: "",
     max_participants: "",
-    price: "",           // <--- เพิ่มตรงนี้
+    price: "",
   });
   const [coverFile, setCoverFile] = useState(null);
   const [coverPreview, setCoverPreview] = useState("");
@@ -35,9 +35,12 @@ export default function CourseCardCreate() {
           axios.get(`${API_URL}/api/courses`),
           axios.get(`${API_URL}/api/course_types`),
         ]);
-        setCourses(courseRes.data || []);
-        setTypes(typeRes.data || []);
-      } catch {}
+        setCourses(Array.isArray(courseRes.data) ? courseRes.data : []);
+        setTypes(Array.isArray(typeRes.data) ? typeRes.data : []);
+      } catch (err) {
+        setMessage("โหลดข้อมูลไม่สำเร็จ");
+        setError(true);
+      }
     })();
   }, []);
 
@@ -59,15 +62,20 @@ export default function CourseCardCreate() {
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
+  const setErrorMsg = (msg) => {
+    setMessage(msg);
+    setError(true);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage(""); setError(false);
 
     // Validate
-    if (!fields.title.trim()) return setErrorMsg("กรุณากรอกชื่อคอร์ส");
+    if (!fields.title.trim()) return setErrorMsg("กรุณากรอกชื่อ Card");
     if (!fields.type_id) return setErrorMsg("เลือกประเภทคอร์ส");
-    if (!fields.course_id) return setErrorMsg("เลือก course_id ที่สัมพันธ์กับ courses");
-    if (!coverFile) return setErrorMsg("เลือกรูปคอร์ส");
+    if (!fields.course_id) return setErrorMsg("เลือก Course");
+    if (!coverFile) return setErrorMsg("เลือกรูปภาพ Card");
     if (!fields.price || isNaN(fields.price)) return setErrorMsg("กรุณากรอกราคาเป็นตัวเลข");
 
     setLoading(true);
@@ -80,10 +88,11 @@ export default function CourseCardCreate() {
         headers: { "Content-Type": "multipart/form-data" },
       });
       setMessage("บันทึกสำเร็จ!");
+      setError(false);
       setFields({
         course_id: "", type_id: "", title: "", detail: "", start_date: "",
         end_date: "", registration_start: "", registration_end: "",
-        location: "", max_participants: "", price: "", // Reset price ด้วย
+        location: "", max_participants: "", price: "",
       });
       setCoverFile(null); setCoverPreview("");
       if (fileInputRef.current) fileInputRef.current.value = "";
@@ -92,8 +101,6 @@ export default function CourseCardCreate() {
     }
     setLoading(false);
   };
-
-  const setErrorMsg = (msg) => { setMessage(msg); setError(true); };
 
   return (
     <div className="max-w-xl mx-auto py-10">

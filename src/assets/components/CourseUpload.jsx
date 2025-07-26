@@ -4,7 +4,7 @@ import { FiX } from "react-icons/fi";
 
 const API_URL = import.meta.env.VITE_API_URL || "";
 
-function CourseForm() {
+export default function CourseForm() {
   const [fields, setFields] = useState({ title: "", type_name: "" });
   const [coverFile, setCoverFile] = useState(null);
   const [coverPreview, setCoverPreview] = useState("");
@@ -90,7 +90,6 @@ function CourseForm() {
             required
           />
         </div>
-
         {/* ประเภทคอร์ส */}
         <div>
           <label className="block mb-1 font-semibold">ประเภทคอร์ส* (กำหนดเอง)</label>
@@ -103,7 +102,6 @@ function CourseForm() {
             required
           />
         </div>
-
         {/* รูปปก */}
         <div>
           <label className="block mb-1 font-semibold">รูปภาพปกคอร์ส*</label>
@@ -137,7 +135,6 @@ function CourseForm() {
             )}
           </div>
         </div>
-
         {/* ปุ่มบันทึก */}
         <button
           type="submit"
@@ -148,7 +145,6 @@ function CourseForm() {
         >
           {submitting ? "กำลังบันทึก..." : "บันทึก"}
         </button>
-
         {/* ข้อความแสดงผล */}
         {message && (
           <div className={`mt-2 ${error ? "text-red-600" : "text-green-600"}`}>
@@ -159,5 +155,3 @@ function CourseForm() {
     </div>
   );
 }
-
-export default CourseForm;
