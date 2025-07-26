@@ -1,0 +1,7 @@
+{
+  "rewrites": [
+    { "source": "/api/:match*", "destination": "/api/:match*" },
+    { "source": "/uploads/:match*", "destination": "/uploads/:match*" },
+    { "source": "/:match*", "destination": "/" }
+  ]
+}
