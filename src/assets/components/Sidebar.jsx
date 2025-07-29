@@ -6,14 +6,19 @@ import {
   FaRegIdCard,
   FaPercentage,
   FaRegEdit,
+  FaClipboardList, // <<<<< เพิ่มตรงนี้
 } from "react-icons/fa";
 
 const menu = [
-  { to: "/", label: "เพิ่มคอร์สใหม่", icon: <FaPlus /> },
-  { to: "/add-card", label: "เพิ่ม Card คอร์ส", icon: <FaRegIdCard /> },
+  { to: "/", label: "Add Course", icon: <FaPlus /> },
+  { to: "/add-card", label: "Add Course Card", icon: <FaRegIdCard /> },
   { to: "/discounts", label: "จัดการส่วนลดคอร์ส", icon: <FaPercentage /> },
-  { to: "/edit", label: "แก้ไขคอร์ส", icon: <FaEdit /> },        // <== ตรงกับ Route /edit
-  { to: "/edit-card", label: "แก้ไข Card คอร์ส", icon: <FaRegEdit /> }, // <== ตรงกับ Route /edit-card
+  
+  { to: "/edit", label: "Edit Course", icon: <FaEdit /> },
+  { to: "/edit-card", label: "Edit Course Card", icon: <FaRegEdit /> },
+
+  { to: "/course-orders", label: "Oder Course", icon: <FaClipboardList /> },
+
 ];
 
 export default function Sidebar() {
