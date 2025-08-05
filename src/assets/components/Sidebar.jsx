@@ -6,19 +6,23 @@ import {
   FaRegIdCard,
   FaPercentage,
   FaRegEdit,
-  FaClipboardList, // <<<<< เพิ่มตรงนี้
+  FaClipboardList,
+  FaUserFriends,
+  FaRegNewspaper,
+  FaNewspaper, // News
 } from "react-icons/fa";
 
 const menu = [
   { to: "/", label: "Add Course", icon: <FaPlus /> },
   { to: "/add-card", label: "Add Course Card", icon: <FaRegIdCard /> },
   { to: "/discounts", label: "จัดการส่วนลดคอร์ส", icon: <FaPercentage /> },
-  
   { to: "/edit", label: "Edit Course", icon: <FaEdit /> },
   { to: "/edit-card", label: "Edit Course Card", icon: <FaRegEdit /> },
-
-  { to: "/course-orders", label: "Oder Course", icon: <FaClipboardList /> },
-
+  { to: "/course-orders", label: "Order Course", icon: <FaClipboardList /> },
+  { to: "/speakers", label: "Manage Speakers", icon: <FaUserFriends /> },
+  // ==== เมนูข่าว ====
+  { to: "/addnews", label: "Add News Title", icon: <FaRegNewspaper /> },
+  { to: "/addnewsdetail", label: "Add News Detail", icon: <FaNewspaper /> },
 ];
 
 export default function Sidebar() {
