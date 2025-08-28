@@ -9,20 +9,25 @@ import {
   FaClipboardList,
   FaUserFriends,
   FaRegNewspaper,
-  FaNewspaper, // News
+  FaNewspaper,
+  FaYoutube,
 } from "react-icons/fa";
 
 const menu = [
+  // Manage Course
   { to: "/", label: "Add Course", icon: <FaPlus /> },
   { to: "/add-card", label: "Add Course Card", icon: <FaRegIdCard /> },
-  { to: "/discounts", label: "จัดการส่วนลดคอร์ส", icon: <FaPercentage /> },
-  { to: "/edit", label: "Edit Course", icon: <FaEdit /> },
-  { to: "/edit-card", label: "Edit Course Card", icon: <FaRegEdit /> },
+  // Manage User Member
+  { to: "/users-members", label: "User Member", icon: <FaPercentage /> },
+  // Manage CourseOrders
   { to: "/course-orders", label: "Order Course", icon: <FaClipboardList /> },
+  // Manage Speakers
   { to: "/speakers", label: "Manage Speakers", icon: <FaUserFriends /> },
-  // ==== เมนูข่าว ====
+  // Manage News
   { to: "/addnews", label: "Add News Title", icon: <FaRegNewspaper /> },
   { to: "/addnewsdetail", label: "Add News Detail", icon: <FaNewspaper /> },
+  // Manage Video
+  { to: "/admin/videos", label: "Add Youtube Video", icon: <FaYoutube className="text-red-500" /> },
 ];
 
 export default function Sidebar() {

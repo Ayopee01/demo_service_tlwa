@@ -1,16 +1,19 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Sidebar from "./assets/components/Sidebar";
-// Menu
+// Manage Course
 import AddCourse from './assets/components/AddCourse';
 import AddCourseCard from "./assets/components/AddCourseCard";
-import AddDiscount from "./assets/components/AddDiscount";
-import EditCourseCard from "./assets/components/EditCourseCard";
-import EditCourse from './assets/components/EditCourse';
+// Manage User Member
+import AdminUsersMembers from "./assets/components/AdminUsersMembers";
+// Manage CourseOrders
 import CourseOrdersTable from "./assets/components/CourseOrdersTable";
+// Manage Speakers
 import ManageSpeakers from "./assets/components/ManageSpeakers";
-
+// Manage News
 import ManageNews from "./assets/components/AdminAddNews";
 import AddNewsDetail from "./assets/components/AddNewsDetail";
+// Manage Video
+import AdminAddVideo from "./assets/components/AdminAddVideo";
 
 function App() {
   return (
@@ -19,17 +22,20 @@ function App() {
         <Sidebar />
         <div className="flex-1 ml-56 min-h-screen bg-gray-50">
           <Routes>
+            {/* --------- Manage Course --------- */}
             <Route path="/" element={<AddCourse />} />
             <Route path="/add-card" element={<AddCourseCard />} />
-            <Route path="/discounts" element={<AddDiscount />} />
-            <Route path="/edit" element={<EditCourse />} />
-            <Route path="/edit-card" element={<EditCourseCard />} />
+            {/* --------- Manage User Member --------- */}
+            <Route path="/users-members" element={<AdminUsersMembers />} />
+            {/* --------- Manage CourseOrders --------- */}
             <Route path="/course-orders" element={<CourseOrdersTable />} />
+            {/* --------- Manage Speakers --------- */}
             <Route path="/speakers" element={<ManageSpeakers />} />
-            {/* --------- ระบบข่าว --------- */}
+            {/* --------- Manage News --------- */}
             <Route path="/addnews" element={<ManageNews />} />
-            {/* --------- ระบบข่าว --------- */}
             <Route path="/addnewsdetail" element={<AddNewsDetail />} />
+            {/* --------- Manage Video --------- */}
+            <Route path="/admin/videos" element={<AdminAddVideo />} />
           </Routes>
         </div>
       </div>
